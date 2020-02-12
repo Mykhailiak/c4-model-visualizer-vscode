@@ -13,15 +13,36 @@ export function activate(context: vscode.ExtensionContext) {
 	// The command has been defined in the package.json file
 	// Now provide the implementation of the command with registerCommand
 	// The commandId parameter must match the command field in package.json
-	let disposable = vscode.commands.registerCommand('extension.helloWorld', () => {
+	let disposable = vscode.commands.registerCommand('c4Visualizer.start', () => {
 		// The code you place here will be executed every time your command is executed
 
-		// Display a message box to the user
-		vscode.window.showInformationMessage('Hello World!');
+		// Create and show a new webview
+		const panel = vscode.window.createWebviewPanel(
+			'c4Visualizer',
+			'C4 Visualizer',
+			vscode.ViewColumn.Two,
+			{},
+		);
+
+		panel.webview.html = getWebviewContent();
 	});
 
 	context.subscriptions.push(disposable);
 }
 
 // this method is called when your extension is deactivated
-export function deactivate() {}
+export function deactivate() { }
+
+function getWebviewContent() {
+	return `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cat Coding</title>
+</head>
+<body>
+  <h1>C4 Visualizer</h1>
+</body>
+</html>`;
+}
