@@ -1,4 +1,5 @@
 import * as vscode from 'vscode';
+import * as parser from 'c4-model-visualizer-core/utils/yaml-parser';
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
@@ -8,13 +9,19 @@ export function activate(context: vscode.ExtensionContext) {
   // This line of code will only be executed once when your extension is activated
   console.log('Congratulations, your extension "c4-model-visualizer-vscode" is now active!');
 
+  vscode.workspace.onDidSaveTextDocument((e) => {
+    try {
+      const parsedData = parser.parse(e.getText());
+
+      console.log(parsedData);
+    } catch(e) {
+      vscode.window.showInformationMessage(e.message);
+    }
+  });
+
   // The command has been defined in the package.json file
   // Now provide the implementation of the command with registerCommand
   // The commandId parameter must match the command field in package.json
-  vscode.workspace.onDidSaveTextDocument((e) => {
-      vscode.window.showInformationMessage(e.getText());
-  });
-
   let disposable = vscode.commands.registerCommand('c4Visualizer.start', () => {
     // The code you place here will be executed every time your command is executed
 
